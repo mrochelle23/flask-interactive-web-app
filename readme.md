@@ -1,6 +1,7 @@
 # Flask Fun App
 
-This Flask application provides a fun and interactive platform with various features including animal facts, compliments, image filtering, and GIF searching. Users can engage with the application to receive random compliments, learn interesting facts about animals, filter images, and search for GIFs based on their queries.
+This is a simple Flask web application that includes several interactive routes, such as generating compliments, displaying animal facts, applying image filters, and searching for GIFs. It is designed to be a fun and engaging project that demonstrates the use of Flask with several features like user input handling, file uploads, and integration with external APIs.
+
 
 ## Features
 
