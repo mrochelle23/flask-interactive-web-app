@@ -182,11 +182,8 @@ pp = PrettyPrinter(indent=4)
 def gif_search():
     """Show a form to search for GIFs and show resulting GIFs from Tenor API."""
     if request.method == 'POST':
-        # TODO: Get the search query & number of GIFs requested by the user, store each as a
-        # variable
         search_query = request.form.get("search_query")
         quantity = request.form.get("quantity")
-
         response = requests.get(
             TENOR_URL,
             {
@@ -194,20 +191,21 @@ def gif_search():
                 'key': API_KEY,
                 'limit': quantity
             })
-
-        gifs = json.loads(response.content).get('results')
-
+        gifs = json.loads(response.content)
+        pp.pprint(gifs)  # Print the entire JSON response for debugging
+        results = gifs.get('results')
+        gif_urls = []
+        if results:
+            for gif in results:
+                pp.pprint(gif)  # Print each gif object for detailed inspection
+                # Adjust the path based on the actual response structure
+                if 'media_formats' in gif and 'gif' in gif['media_formats']:
+                    gif_urls.append(gif['media_formats']['gif']['url'])
+                else:
+                    pp.pprint(f"Missing 'media_formats' or 'gif' key in gif: {gif}")
         context = {
-            'gifs': gifs
+            'gifs': gif_urls
         }
-
-        #  Uncomment me to see the result JSON!
-        # Look closely at the response! It's a list
-        # list of data. The media property contains a
-        # list of media objects. Get the gif and use it's
-        # url in your template to display the gif.
-        pp.pprint(gifs)
-
         return render_template('gif_search.html', **context)
     else:
         return render_template('gif_search.html')
